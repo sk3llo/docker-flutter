@@ -4,14 +4,14 @@ ENV UID=1000
 ENV GID=1000
 ENV USER="developer"
 ENV JAVA_VERSION="8"
-ENV ANDROID_TOOLS_URL="https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip"
-ENV ANDROID_VERSION="29"
-ENV ANDROID_BUILD_TOOLS_VERSION="29.0.3"
+ENV ANDROID_TOOLS_URL="https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip"
+ENV ANDROID_VERSION="30"
+ENV ANDROID_BUILD_TOOLS_VERSION="30.0.3"
 ENV ANDROID_ARCHITECTURE="x86_64"
 ENV ANDROID_SDK_ROOT="/home/$USER/android"
-ENV FLUTTER_CHANNEL="dev"
-ENV FLUTTER_VERSION="2.3.0-16.0.pre"
-ENV FLUTTER_URL="https://storage.googleapis.com/flutter_infra/releases/$FLUTTER_CHANNEL/linux/flutter_linux_$FLUTTER_VERSION-$FLUTTER_CHANNEL.tar.xz"
+ENV FLUTTER_CHANNEL="stable"
+ENV FLUTTER_VERSION="2.8.0"
+ENV FLUTTER_URL="https://storage.googleapis.com/flutter_infra_release/releases/$FLUTTER_CHANNEL/linux/flutter_linux_$FLUTTER_VERSION-$FLUTTER_CHANNEL.tar.xz"
 ENV FLUTTER_HOME="/home/$USER/flutter"
 ENV FLUTTER_WEB_PORT="8090"
 ENV FLUTTER_DEBUG_PORT="42000"
@@ -54,9 +54,8 @@ RUN curl -o flutter.tar.xz $FLUTTER_URL \
   && mkdir -p $FLUTTER_HOME \
   && tar xf flutter.tar.xz -C /home/$USER \
   && rm flutter.tar.xz \
-  && flutter config --no-analytics --enable-web \
+  && flutter config --no-analytics \
   && flutter precache \
-  && yes "y" | flutter doctor --android-licenses \
   && flutter doctor \
   && flutter emulators --create \
   && flutter update-packages
@@ -64,5 +63,4 @@ RUN curl -o flutter.tar.xz $FLUTTER_URL \
 COPY entrypoint.sh /usr/local/bin/
 COPY chown.sh /usr/local/bin/
 COPY flutter-android-emulator.sh /usr/local/bin/flutter-android-emulator
-COPY flutter-web.sh /usr/local/bin/flutter-web
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
